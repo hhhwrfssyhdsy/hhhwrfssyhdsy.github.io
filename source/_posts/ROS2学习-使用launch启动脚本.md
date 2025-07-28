@@ -23,14 +23,16 @@ launch脚本位置一般在功能包的launch目录下(需自己新建)
 
 使用python库: *launch*、*launch_ros*
 
-```
+<!--more-->
+
+```python
 import launch
 import launch_ros
 ```
 
 launch工具在工作时会在文件中搜索*generate_launch_description*的函数来获取启动内容的描述，故第一步编写*generate_launch_description*函数
 
-```
+```python
 def generate_launch_description():
     #创建launch_ros.actions.Node类对象，包装各个节点
     action_node_patrol_client = launch_ros.actions.Node(
@@ -55,9 +57,9 @@ def generate_launch_description():
 
 | 参数 | 作用 |
 |:-:|:-:|
-|package|指定功能包名称|
-|executable|功能包对应可执行文件(即创建的节点名)|
-|output|输出位置，screen：屏幕，log：日志，both：兼有|
+|*package*|指定功能包名称|
+|*executable*|功能包对应可执行文件(即创建的节点名)|
+|*output*|输出位置，screen：屏幕，log：日志，both：兼有|
 
 最后将节点启动对象合成数组传给*launch.LaunchDescription*并返回。
 
@@ -66,7 +68,7 @@ def generate_launch_description():
 
 对于需传入参数的节点，需用*launch.actions.DeclareLaunchArgument*进行声明，并在*launch_ros.actions.Node*类对象的*parameter*参数使用*launch.substitutions.LaunchConfiguration*传递节点的参数。
 
-```
+```python
 def generate_launch_description():
     #参数声明
     action_declare_arg_max_speed = launch.actions.DeclareLaunchArgument('launch_max_speed',default_value='2.0')
@@ -91,10 +93,11 @@ def generate_launch_description():
 + **动作:** 主要模块*launch_ros.actions*、*launch.actions*
 |常见动作|功能|
 |:-:|:-:|
-|IncludeLaunchDescription动作|包含其他launch文件|
-|ExecuteProcess动作|执行指定命令行命令|
-|LogInfo动作|输出日志|
-```
+|*IncludeLaunchDescription*动作|包含其他launch文件|
+|*ExecuteProcess*动作|执行指定命令行命令|
+|*LogInfo*动作|输出日志|
+
+```python
 import launch
 import launch_ros
 from ament_index_python.packages import get_package_share_directory
@@ -127,7 +130,7 @@ def generate_launch_description():
 主要库:launch.condition
 
 例子：
-```
+```python
 import launch
 import launch_ros
 from launch.conditions import IfCondition

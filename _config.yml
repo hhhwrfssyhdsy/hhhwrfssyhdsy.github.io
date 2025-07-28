@@ -104,3 +104,6 @@ deploy:
   type: git
   repo: git@github.com:hhhwrfssyhdsy/hhhwrfssyhdsy.github.io.git
   branch: main
+
+plugins: hexo-generate-feed
+since: 2025

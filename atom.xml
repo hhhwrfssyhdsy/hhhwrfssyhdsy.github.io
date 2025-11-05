@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2025-11-05T08:41:28.820Z</updated>
+  <updated>2025-11-05T09:56:58.605Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,23 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ret2csu总结</title>
+    <link href="http://example.com/2025/11/05/ret2csu%E6%80%BB%E7%BB%93/"/>
+    <id>http://example.com/2025/11/05/ret2csu%E6%80%BB%E7%BB%93/</id>
+    <published>2025-11-05T09:53:21.000Z</published>
+    <updated>2025-11-05T09:56:58.605Z</updated>
+    
+    
+    
+    
+    <category term="ROS2学习" scheme="http://example.com/categories/ROS2%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+    <category term="ctf学习" scheme="http://example.com/tags/ctf%E5%AD%A6%E4%B9%A0/"/>
+    
+  </entry>
   
   <entry>
     <title>ROS2学习:使用launch启动脚本</title>

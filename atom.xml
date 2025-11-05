@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ShingFinger的小站</title>
+  
+  
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2025-11-05T08:41:28.820Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>ShingFinger</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ROS2学习:使用launch启动脚本</title>
+    <link href="http://example.com/2025/07/23/ROS2%E5%AD%A6%E4%B9%A0-%E4%BD%BF%E7%94%A8launch%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC/"/>
+    <id>http://example.com/2025/07/23/ROS2%E5%AD%A6%E4%B9%A0-%E4%BD%BF%E7%94%A8launch%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC/</id>
+    <published>2025-07-23T08:26:23.000Z</published>
+    <updated>2025-11-05T08:41:28.820Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="使用launch启动多个节点"><a href="#使用launch启动多个节点" class="headerlink" title="使用launch启动多个节点"></a>使用launch启动多个节点</h2><p>ROS2可用XML，YAML，PYTHON编写启动脚本，但PYTHON使用更加广泛，故主要总结PYTHON编写脚本的方法。</p><h3 id="1-启动命令"><a href="#1-启动命令" class="headerlink" title="1. 启动命令"></a>1. 启动命令</h3><blockquote><blockquote><p>ros2 [package名(文件夹名)] [launch脚本名]</p></blockquote></blockquote><p>例子：</p><blockquote><blockquote><p>ros2 launch fishbot_discription gazebo_display.launch.py</p></blockquote></blockquote><h3 id="2-脚本编写"><a href="#2-脚本编写" class="headerlink" title="2.脚本编写"></a>2.脚本编写</h3><p>launch脚本位置一般在功能包的launch目录下(需自己新建)</p><p>使用python库: <em>launch</em>、<em>launch_ros</em></p><span id="more"></span><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> launch</span><br><span class="line"><span class="keyword">import</span> launch_ros</span><br></pre></td></tr></table></figure><p>launch工具在工作时会在文件中搜索<em>generate_launch_description</em>的函数来获取启动内容的描述，故第一步编写<em>generate_launch_description</em>函数</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">generate_launch_description</span>():</span><br><span class="line">    <span class="comment">#创建launch_ros.actions.Node类对象，包装各个节点</span></span><br><span class="line">    action_node_patrol_client = launch_ros.actions.Node(</span><br><span class="line">        package=<span class="string">&#x27;demo_cpp_service&#x27;</span>,</span><br><span class="line">        executable=<span class="string">&#x27;patrol_client&#x27;</span>,</span><br><span class="line">        output=<span class="string">&#x27;log&#x27;</span>,</span><br><span class="line">    )</span><br><span class="line">    action_node_turtlesim_node = launch_ros.actions.Node(</span><br><span class="line">        package=<span class="string">&#x27;turtlesim&#x27;</span>,</span><br><span class="line">        executable=<span class="string">&#x27;turtlesim_node&#x27;</span>,</span><br><span class="line">        output=<span class="string">&#x27;both&#x27;</span>,</span><br><span class="line">    )</span><br><span class="line">    <span class="comment">#创建描述对象launch.LaunchDescription</span></span><br><span class="line">     launch_description = launch.LaunchDescription([</span><br><span class="line">        action_node_patrol_client,</span><br><span class="line">        action_node_turtlesim_node</span><br><span class="line">    ])</span><br><span class="line">    <span class="keyword">return</span> launch_description</span><br></pre></td></tr></table></figure><p>总结：首先对各个节点创建<em>launch_ros.actions.Node</em>类对象，对象传入参数及其含义：</p><table><thead><tr><th align="center">参数</th><th align="center">作用</th></tr></thead><tbody><tr><td align="center"><em>package</em></td><td align="center">指定功能包名称</td></tr><tr><td align="center"><em>executable</em></td><td align="center">功能包对应可执行文件(即创建的节点名)</td></tr><tr><td align="center"><em>output</em></td><td align="center">输出位置，screen：屏幕，log：日志，both：兼有</td></tr></tbody></table><p>最后将节点启动对象合成数组传给<em>launch.LaunchDescription</em>并返回。</p><h3 id="3-传递参数"><a href="#3-传递参数" class="headerlink" title="3.传递参数"></a>3.传递参数</h3><p>对于需传入参数的节点，需用<em>launch.actions.DeclareLaunchArgument</em>进行声明，并在<em>launch_ros.actions.Node</em>类对象的<em>parameter</em>参数使用<em>launch.substitutions.LaunchConfiguration</em>传递节点的参数。</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">generate_launch_description</span>():</span><br><span class="line">    <span class="comment">#参数声明</span></span><br><span class="line">    action_declare_arg_max_speed = launch.actions.DeclareLaunchArgument(<span class="string">&#x27;launch_max_speed&#x27;</span>,default_value=<span class="string">&#x27;2.0&#x27;</span>)</span><br><span class="line">    <span class="comment">#传入Node对象</span></span><br><span class="line">    action_node_turtle_control = launch_ros.actions.Node(</span><br><span class="line">        package=<span class="string">&#x27;demo_cpp_service&#x27;</span>,</span><br><span class="line">        executable=<span class="string">&#x27;turtle_control&#x27;</span>,</span><br><span class="line">        <span class="comment"># 使用 launch 中参数launch_max_speed 值替换max_speed值</span></span><br><span class="line">        parameters=[&#123;<span class="string">&#x27;max_speed&#x27;</span>:launch.substitutions.LaunchConfiguration(<span class="string">&#x27;launch_max_speed&#x27;</span>,default=<span class="string">&#x27;2.0&#x27;</span>)&#125;],</span><br><span class="line">        output=<span class="string">&#x27;screen&#x27;</span>,</span><br><span class="line">    )</span><br><span class="line">    <span class="comment">#创建描述对象launch.LaunchDescription，需包含参数声明</span></span><br><span class="line">     launch_description = launch.LaunchDescription([</span><br><span class="line">        action_declare_arg_max_speed,</span><br><span class="line">        action_node_turtle_control</span><br><span class="line">    ])</span><br><span class="line">    <span class="keyword">return</span> launch_description</span><br></pre></td></tr></table></figure><h3 id="4-launch组件总结"><a href="#4-launch组件总结" class="headerlink" title="4.launch组件总结"></a>4.launch组件总结</h3><ul><li><strong>动作:</strong> 主要模块<em>launch_ros.actions</em>、<em>launch.actions</em><table><thead><tr><th align="center">常见动作</th><th align="center">功能</th></tr></thead><tbody><tr><td align="center"><em>IncludeLaunchDescription</em>动作</td><td align="center">包含其他launch文件</td></tr><tr><td align="center"><em>ExecuteProcess</em>动作</td><td align="center">执行指定命令行命令</td></tr><tr><td align="center"><em>LogInfo</em>动作</td><td align="center">输出日志</td></tr></tbody></table></li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> launch</span><br><span class="line"><span class="keyword">import</span> launch_ros</span><br><span class="line"><span class="keyword">from</span> ament_index_python.packages <span class="keyword">import</span> get_package_share_directory</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_launch_description</span>():</span><br><span class="line">    <span class="comment">#IncludeLaunchDescription动作包括其他launch文件</span></span><br><span class="line">    <span class="comment">#利用launch.launch_description_sources.PythonLaunchDescriptionSource对象传入路径</span></span><br><span class="line">    <span class="comment">#常与get_package_share_directory连用获取指定launch文件的路径</span></span><br><span class="line">    action_include_launch = launch.actions.IncludeLaunchDescription(launch.launch_description_sources.PythonLaunchDescriptionSource([get_package_share_directory(<span class="string">&quot;turtlesiml&quot;</span>),<span class="string">&quot;/launch&quot;</span>,<span class="string">&quot;/multisim.launch.py&quot;</span>]))</span><br><span class="line">    <span class="comment">#ExecuteProcess动作执行命令行</span></span><br><span class="line">    <span class="comment">#注意各个命令间的空格</span></span><br><span class="line">    action_executeprocess = launch.actions.ExecuteProcess(</span><br><span class="line">        cmd=[<span class="string">&#x27;ros2 &#x27;</span>,<span class="string">&#x27;service &#x27;</span>,<span class="string">&#x27;call &#x27;</span>,<span class="string">&#x27;/turtlesiml/spawn &#x27;</span>,<span class="string">&#x27;turtlesim/srv/Spawn &#x27;</span>,<span class="string">&#x27;&#123;x:1, y:1&#125;&#x27;</span>]</span><br><span class="line">    )</span><br><span class="line">    <span class="comment">#利用LogInfo动作输出日志</span></span><br><span class="line">    action_log_info = launch.actions.LogInfo(msg=<span class="string">&#x27;使用launch来调用服务生成海龟&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#利用定时器动作实现依次启动日志输出和进程执行,并使用GroupAction封装成组合</span></span><br><span class="line">    action_group = launch.actions.GroupAction([</span><br><span class="line">        launch.actions.TimerAction(period=<span class="number">2.0</span>,actions=[action_log_info]),</span><br><span class="line">        launch.actions.TimerAction(period=<span class="number">3.0</span>,actions=[action_executeprocess]),</span><br><span class="line">    ])</span><br><span class="line">    <span class="comment">#合成启动描述</span></span><br><span class="line">    launch_description = launch.LaunchDescription([action_include_launch,action_group])</span><br><span class="line">    <span class="keyword">return</span> launch_description</span><br></pre></td></tr></table></figure><ul><li><p>**替换:*<em>上述对节点传递参数即为使用launch的参数</em>替换*节点的参数值</p></li><li><p>**条件:**决定哪些动作启动和哪些动作不启动<br>主要库:launch.condition</p></li></ul><p>例子：</p><pre><code class="language-python">import launchimport launch_rosfrom launch.conditions import IfConditiondef generate_launch_description():    #声明参数，是否创建新的海龟    declare_spawn_turtle = launch.actions.DeclareLaunchArgument(        &#39;spawn_turtle&#39;, default_value=&#39;false&#39;,description=&#39;是否生成新的海龟&#39;    )    spawn_turtle = launch.substitutions.LaunchConfiguration(&quot;spawn_turtle&quot;)    action_turtlesim = launch_ros.actions.Node(        package=&quot;turtlesim&quot;, executable= &quot;turtlesim_node&quot;, output=&quot;screen&quot;    )    #给日志输出和服务调用添加条件    action_executeprocess = launch.actions.ExecuteProcess(        condition=IfCondition(spawn_turtle),        cmd=[&#39;ros2 &#39;,&#39;service &#39;,&#39;call &#39;,&#39;/spawn &#39;,&#39;turtlesim/srv/Spawn &#39;,&#39;&#123;x:1,y:1&#125;&#39;]    )    action_log_info = launch.actions.LogInfo(IfCondition(spawn_turtle),msg=&quot;使用executeprocess来调用服务生成海龟&quot;)    #利用定时器依次启动    action_group = launch.actions.GroupAction([        launch.actions.TimerAction(period=2.0,actions=[action_log_info])        launch.actions.TimerAction(period=3.0,actions=        [action_executeprocess])    ])    #合成启动描述并返回    launch_description = launch.LaunchDescription([        declare_spawn_turtle,        action_turtlesim,        action_group    ])    return launch_description</code></pre>]]></content>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;使用launch启动多个节点&quot;&gt;&lt;a href=&quot;#使用launch启动多个节点&quot; class=&quot;headerlink&quot; title=&quot;使用launch启动多个节点&quot;&gt;&lt;/a&gt;使用launch启动多个节点&lt;/h2&gt;&lt;p&gt;ROS2可用XML，YAML，PYTHON编写启动脚本，但PYTHON使用更加广泛，故主要总结PYTHON编写脚本的方法。&lt;/p&gt;
+&lt;h3 id=&quot;1-启动命令&quot;&gt;&lt;a href=&quot;#1-启动命令&quot; class=&quot;headerlink&quot; title=&quot;1. 启动命令&quot;&gt;&lt;/a&gt;1. 启动命令&lt;/h3&gt;&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ros2 [package名(文件夹名)] [launch脚本名]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;例子：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ros2 launch fishbot_discription gazebo_display.launch.py&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;2-脚本编写&quot;&gt;&lt;a href=&quot;#2-脚本编写&quot; class=&quot;headerlink&quot; title=&quot;2.脚本编写&quot;&gt;&lt;/a&gt;2.脚本编写&lt;/h3&gt;&lt;p&gt;launch脚本位置一般在功能包的launch目录下(需自己新建)&lt;/p&gt;
+&lt;p&gt;使用python库: &lt;em&gt;launch&lt;/em&gt;、&lt;em&gt;launch_ros&lt;/em&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="ROS2学习" scheme="http://example.com/categories/ROS2%E5%AD%A6%E4%B9%A0/"/>
+    
+    
+    <category term="ros2" scheme="http://example.com/tags/ros2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>My first post</title>
+    <link href="http://example.com/2025/07/22/My-first-post/"/>
+    <id>http://example.com/2025/07/22/My-first-post/</id>
+    <published>2025-07-22T14:52:34.000Z</published>
+    <updated>2025-11-05T08:41:28.819Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="人生的第一篇blog"><a href="#人生的第一篇blog" class="headerlink" title="人生的第一篇blog"></a>人生的第一篇blog</h2><p>这是我的第一篇博客，虽然不知道该写些什么，但还是恭喜我通过hexo搭建了我的第一个博客网站。初步打算以后在博客记录自己在学习过程中的心得和技巧，还有一些杂谈，随缘更新。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;人生的第一篇blog&quot;&gt;&lt;a href=&quot;#人生的第一篇blog&quot; class=&quot;headerlink&quot; title=&quot;人生的第一篇blog&quot;&gt;&lt;/a&gt;人生的第一篇blog&lt;/h2&gt;&lt;p&gt;这是我的第一篇博客，虽然不知道该写些什么，但还是恭喜我通过hexo搭建了我的</summary>
+      
+    
+    
+    
+    <category term="杂谈" scheme="http://example.com/categories/%E6%9D%82%E8%B0%88/"/>
+    
+    
+    <category term="杂谈" scheme="http://example.com/tags/%E6%9D%82%E8%B0%88/"/>
+    
+  </entry>
+  
+</feed>

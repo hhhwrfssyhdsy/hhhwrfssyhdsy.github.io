@@ -21,19 +21,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Do what you are interested in">
-<meta property="og:type" content="website">
-<meta property="og:title" content="About">
-<meta property="og:url" content="http://example.com/about/index.html">
+  <meta name="description" content="Systemcall 相关1.pop rax; ret; 可以用来调整 syscall 的调用函数 执行 syscall 时，CPU 会根据寄存器里的值进入内核态，并执行相应的系统调用。关键寄存器如下：    寄存器 含义    rax 系统调用号（syscall number）   rdi 第一个参数   rsi 第二个参数   rdx 第三个参数   r10 第四个参数   r8 第五个参数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用gadget总结">
+<meta property="og:url" content="http://example.com/2025/11/06/%E5%B8%B8%E7%94%A8gadget%E6%80%BB%E7%BB%93/index.html">
 <meta property="og:site_name" content="ShingFinger的小站">
-<meta property="og:description" content="Do what you are interested in">
+<meta property="og:description" content="Systemcall 相关1.pop rax; ret; 可以用来调整 syscall 的调用函数 执行 syscall 时，CPU 会根据寄存器里的值进入内核态，并执行相应的系统调用。关键寄存器如下：    寄存器 含义    rax 系统调用号（syscall number）   rdi 第一个参数   rsi 第二个参数   rdx 第三个参数   r10 第四个参数   r8 第五个参数">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-07-22T14:44:42.000Z">
-<meta property="article:modified_time" content="2025-11-05T08:41:28.821Z">
+<meta property="article:published_time" content="2025-11-06T15:52:39.000Z">
+<meta property="article:modified_time" content="2025-11-07T10:42:18.091Z">
 <meta property="article:author" content="ShingFinger">
+<meta property="article:tag" content="pwn">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/about/">
+<link rel="canonical" href="http://example.com/2025/11/06/%E5%B8%B8%E7%94%A8gadget%E6%80%BB%E7%BB%93/">
 
 
 <script id="page-configurations">
@@ -41,13 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>About | ShingFinger的小站
-</title>
+  <title>常用gadget总结 | ShingFinger的小站</title>
   
 
 
@@ -165,47 +165,221 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="zh-CN">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/11/06/%E5%B8%B8%E7%94%A8gadget%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="ShingFinger">
+      <meta itemprop="description" content="Do what you are interested in">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ShingFinger的小站">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          常用gadget总结
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">About
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
 
-<div class="post-meta">
+              <time title="创建时间：2025-11-06 23:52:39" itemprop="dateCreated datePublished" datetime="2025-11-06T23:52:39+08:00">2025-11-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-11-07 18:42:18" itemprop="dateModified" datetime="2025-11-07T18:42:18+08:00">2025-11-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ctf%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">ctf学习</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2025/11/06/%E5%B8%B8%E7%94%A8gadget%E6%80%BB%E7%BB%93/" class="post-meta-item leancloud_visitors" data-flag-title="常用gadget总结" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2025/11/06/%E5%B8%B8%E7%94%A8gadget%E6%80%BB%E7%BB%93/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2025/11/06/%E5%B8%B8%E7%94%A8gadget%E6%80%BB%E7%BB%93/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
   
 
-</div>
+        </div>
+      </header>
 
-</header>
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-      
-      
-      <div class="post-body">
-          
-      </div>
-      
-      
-      
+        <h3 id="Systemcall-相关"><a href="#Systemcall-相关" class="headerlink" title="Systemcall 相关"></a>Systemcall 相关</h3><p>1.<code>pop rax; ret;</code> 可以用来调整 syscall 的调用函数</p>
+<p>执行 <code>syscall</code> 时，CPU 会根据寄存器里的值进入内核态，并执行相应的系统调用。<br>关键寄存器如下：</p>
+<table>
+<thead>
+<tr>
+<th>寄存器</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>rax</strong></td>
+<td>系统调用号（syscall number）</td>
+</tr>
+<tr>
+<td><strong>rdi</strong></td>
+<td>第一个参数</td>
+</tr>
+<tr>
+<td><strong>rsi</strong></td>
+<td>第二个参数</td>
+</tr>
+<tr>
+<td><strong>rdx</strong></td>
+<td>第三个参数</td>
+</tr>
+<tr>
+<td><strong>r10</strong></td>
+<td>第四个参数</td>
+</tr>
+<tr>
+<td><strong>r8</strong></td>
+<td>第五个参数</td>
+</tr>
+<tr>
+<td><strong>r9</strong></td>
+<td>第六个参数</td>
+</tr>
+</tbody></table>
+<p>不同的系统调用号对应不同的函数：</p>
+<table>
+<thead>
+<tr>
+<th>系统调用</th>
+<th>编号 (x86_64)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>read</td>
+<td>0</td>
+<td>从文件读取</td>
+</tr>
+<tr>
+<td>write</td>
+<td>1</td>
+<td>写入文件</td>
+</tr>
+<tr>
+<td>open</td>
+<td>2</td>
+<td>打开文件</td>
+</tr>
+<tr>
+<td>execve</td>
+<td>59</td>
+<td>执行程序</td>
+</tr>
+</tbody></table>
+<p>举个例子：</p>
+<p>execve(“&#x2F;bin&#x2F;sh”, 0, 0)</p>
+<p>在 x86_64 上：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rax = <span class="number">59</span>          ; execve 的 syscall 编号</span><br><span class="line">rdi = <span class="string">&quot;/bin/sh&quot;</span>   ; 第一个参数：文件路径</span><br><span class="line">rsi = <span class="number">0</span>           ; 第二个参数：argv</span><br><span class="line">rdx = <span class="number">0</span>           ; 第三个参数：envp</span><br><span class="line">syscall           ; 执行系统调用</span><br></pre></td></tr></table></figure>
+
     </div>
-    
 
     
     
     
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/pwn/" rel="tag"># pwn</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/11/06/orw%E6%80%BB%E7%BB%93/" rel="prev" title="orw总结">
+      <i class="fa fa-chevron-left"></i> orw总结
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -252,6 +426,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Systemcall-%E7%9B%B8%E5%85%B3"><span class="nav-number">1.</span> <span class="nav-text">Systemcall 相关</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
